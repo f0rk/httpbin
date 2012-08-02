@@ -57,7 +57,8 @@ def gzip(f, *args, **kwargs):
     if isinstance(data, Response):
         data.data = gzip_data
         data.headers['Content-Encoding'] = 'gzip'
-        data.headers['Content-Length'] = str(len(data.data))
+        if not data.headers['Transfer-Encoding'] == 'chunked':
+            data.headers['Content-Length'] = str(len(data.data))
 
         return data
 
